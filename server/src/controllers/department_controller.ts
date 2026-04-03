@@ -9,23 +9,30 @@ type type_new_dept = {
   importance_weight: number;
 };
 
-//  SECTION:  POST /api/v1/departments
+//  SECTION: GET /api/v1/departments
 
-const create_new_department = handle_async(
+//  SECTION: POST /api/v1/departments
+
+const create_departments = handle_async(
   async (req: Request, res: Response, next: NextFunction) => {
     const dept_arr: type_new_dept[] = req.body.departments;
+
+    let count: number = 1;
+    let strings_arr: string[] = [];
+
     //  remarks: for batch insert, customised inserted values with new string
-    let inserted_val: string = '';
-    dept_arr.map((dept) => {
-      if (inserted_val.length != 0) {
-        inserted_val += ', ';
-      }
-      inserted_val += `('${dept.dept_name}', ${dept.dept_capacity}, ${dept.importance_weight})`;
+    //  learnt: prevent sql injection without inserting req.body directly.
+    dept_arr.map(() => {
+      let part_1 = count + 1;
+      let part_2 = count + 2;
+      let part_3 = count + 3;
+      strings_arr.push(`(${part_1}, ${part_2}, ${part_3})`);
     });
+    const dept_str_compound: string = strings_arr.join(', ');
 
     // reamrks: put the new string into service function to proceed
     const new_dept =
-      await department_services.create_new_department(inserted_val);
+      await department_services.create_departments(dept_str_compound);
     res.status(201).json({
       status: 'success',
       data: {
@@ -38,5 +45,5 @@ const create_new_department = handle_async(
 //  Export
 
 export default {
-  create_new_department,
+  create_departments,
 };

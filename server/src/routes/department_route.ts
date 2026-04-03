@@ -5,7 +5,7 @@ import department_controller from '../controllers/department_controller';
 const router = express.Router();
 
 //  Import routes
-router.route('/').post(department_controller.create_new_department);
+router.route('/').post(department_controller.create_departments);
 
 //  Export
 export default router;

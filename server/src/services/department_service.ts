@@ -2,7 +2,7 @@ import pool from '../database/pool';
 
 //  Build service functions
 
-const create_new_department = async (dept_str_compound: string) => {
+const create_departments = async (dept_str_compound: string) => {
   const result = await pool.query(
     `INSERT INTO departments 
      (dept_name, dept_capacity, importance_weight)
@@ -15,5 +15,5 @@ const create_new_department = async (dept_str_compound: string) => {
 //  Export
 
 export default {
-  create_new_department,
+  create_departments,
 };
