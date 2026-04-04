@@ -1,13 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { handle_async } from '../util/handle_async';
 import department_services from '../services/department_service';
-import { count } from 'console';
-
-type type_new_dept = {
-  dept_name: string;
-  dept_capacity: number;
-  importance_weight: number;
-};
+import { type_dept_row } from '../types/types';
 
 //  GET /api/v1/departments
 //  INPUT: none
@@ -49,21 +43,22 @@ const get_department_by_id = handle_async(
 const create_departments_batch = handle_async(
   async (req: Request, res: Response, next: NextFunction) => {
     //  declarations
-    const dept_arr: type_new_dept[] = req.body.departments;
-    let count: number = 1;
-    let strings_arr: string[] = [];
+    const dept_arr: type_dept_row[] = req.body.departments;
     //  remarks: for batch insert, customised inserted values with new string
     //  learnt: prevent sql injection without inserting req.body directly.
-    dept_arr.map(() => {
-      let part_1 = count + 1;
-      let part_2 = count + 2;
-      let part_3 = count + 3;
-      strings_arr.push(`(${part_1}, ${part_2}, ${part_3})`);
-    });
-    const dept_str_compound: string = strings_arr.join(', ');
-    // reamrks: put the new string into service function to proceed
-    const departments =
-      await department_services.create_departments_batch(dept_str_compound);
+    //  learnt: postgre `CREATE` runs in sequence, required Promise for handling batch items
+    const departments = await Promise.all(
+      dept_arr.map((el: type_dept_row) => {
+        const { dept_name, dept_capacity, importance_weight, is_active } = el;
+        // reamrks: put the new string into service function to proceed
+        department_services.create_departments_batch(
+          dept_name,
+          dept_capacity,
+          importance_weight,
+          is_active,
+        );
+      }),
+    );
     res.status(201).json({
       status: 'success',
       count: departments.length,

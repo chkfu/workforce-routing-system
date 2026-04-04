@@ -18,11 +18,18 @@ This file records the major version changes of the projects.
 
 <br/>
 
-## [1.0.1] - Mar 29, 2026
+## [1.0.1] - Apr 4, 2026
 
 ### Added
 
 - setup express server with https, ssl/tls and security settings
+- setup neon postgre database connection and structure of schema, routes, controllers and services
+- created wrapper function `handle_async` to streamlined repeated try-catch procedures
+- created centralised collection for reused types at `/types`
+
+### Fixed
+
+- resolved bug of `create` methods not in async by implementing promise at departments controller
 
 <br/>
 

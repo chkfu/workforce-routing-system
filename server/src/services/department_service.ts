@@ -22,12 +22,18 @@ const get_department_by_id = async (id: string) => {
 //  2.  POST methods
 
 //  learnt: `returning *` for returning inserted records, not available for `SELECT` methods
-const create_departments_batch = async (dept_str_compound: string) => {
+const create_departments_batch = async (
+  dept_name: string,
+  dept_capacity: number,
+  importance_weight: number,
+  is_active: boolean,
+) => {
   const result = await pool.query(
     `INSERT INTO departments 
-     (dept_name, dept_capacity, importance_weight)
-     VALUES ${dept_str_compound}
+     (dept_name, dept_capacity, importance_weight, is_active)
+     VALUES ($1, $2, $3, $4)
      RETURNING *;`,
+    [dept_name, dept_capacity, importance_weight, is_active],
   );
   return result.rows;
 };
