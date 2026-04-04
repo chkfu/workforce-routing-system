@@ -1,6 +1,20 @@
 import { createLogger, format, transports } from 'winston';
+import DailyRotateFile from 'winston-daily-rotate-file';
 
-const { combine, timestamp, printf, colorize, errors, json } = format;
+//  learnt: winston's built-in functions, spec usage
+const { combine, timestamp, printf, colorize, errors, label } = format;
+
+//  Setup log files format
+const createRotateTransport = (filename: string, level: string) => {
+  return new DailyRotateFile({
+    filename: `log/${filename}_%DATE%.log`,
+    datePattern: 'YYYY-MM-DD',
+    zippedArchive: true,
+    maxSize: '128m',
+    maxFiles: '7d', //  learnt: kepts logs for the max timespan
+    level, // learnt: include this level and its above
+  });
+};
 
 //  Setup message format
 
@@ -9,48 +23,32 @@ const msg_format = printf(({ level, message, label, timestamp, stack }) => {
   return `${timestamp} | [${label || 'API'}] | ${level}: ${log_message}`;
 });
 
-//  Setup logging criteria
-
-const cust_format = combine(
-  timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-  errors({ stack: true }),
-  msg_format,
-);
-
-const cust_transports = (output_filename: string) => {
-  output_filename = String(output_filename);
-  return [
-    new transports.Console({
-      format: combine(colorize(), cust_format),
-    }),
-    new transports.File({
-      filename: `logs/${output_filename}.log`,
-      level: 'error',
-    }),
-  ];
-};
-
 //  Setup loggers
 
-export const app_logger = createLogger({
-  format: cust_format,
-  transports: cust_transports('app_logger'),
-});
+//  remarks: reusable creater for further expansions
+const create_loggers = (filename: string, level: string = 'info') => {
+  return createLogger({
+    format: combine(
+      label({ label: filename.toUpperCase() }),
+      timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+      errors({ stack: true }),
+      msg_format,
+    ),
+    transports: [
+      //  1.  first transport formatter - rotate version
+      createRotateTransport(filename, level),
+      //  2.  second transport formatter - terminal console version
+      new transports.Console({
+        format: combine(colorize({ all: true }), msg_format),
+      }),
+    ],
+  });
+};
 
-export const auth_logger = createLogger({
-  format: cust_format,
-  transports: cust_transports('auth_logger'),
-});
-
-export const http_logger = createLogger({
-  format: cust_format,
-  transports: cust_transports('http_logger'),
-});
-
-export const critical_logger = createLogger({
-  format: cust_format,
-  transports: cust_transports('critical_logger'),
-});
+const app_logger = create_loggers('app');
+const auth_logger = create_loggers('auth');
+const http_logger = create_loggers('http');
+const critical_logger = create_loggers('critical', 'error');
 
 export default {
   app_logger,
