@@ -7,7 +7,7 @@ const { combine, timestamp, printf, colorize, errors, label } = format;
 //  Setup log files format
 const createRotateTransport = (filename: string, level: string) => {
   return new DailyRotateFile({
-    filename: `log/${filename}_%DATE%.log`,
+    filename: `./src/infra/logs/${filename}-%DATE%.log`,
     datePattern: 'YYYY-MM-DD',
     zippedArchive: true,
     maxSize: '128m',
@@ -20,7 +20,7 @@ const createRotateTransport = (filename: string, level: string) => {
 
 const msg_format = printf(({ level, message, label, timestamp, stack }) => {
   const log_message = stack || message;
-  return `${timestamp} | [${label || 'API'}] | ${level}: ${log_message}`;
+  return `${timestamp} - ${label || 'API'} - ${level}: ${log_message}`;
 });
 
 //  Setup loggers

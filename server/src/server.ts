@@ -10,6 +10,8 @@ import rateLimit from 'express-rate-limit';
 import hpp from 'hpp';
 import cookie_parser from 'cookie-parser';
 import departmentRoute from './routes/department_route';
+import logger from './infra/loggers';
+import { downtime } from './util/error_control/downtime';
 
 //  Setup dotenv
 
@@ -50,7 +52,7 @@ exp_app.use(
 //  5. prevent clients pollute secret with signed cookies
 exp_app.use(cookie_parser(process.env.COOKIE_SECRET));
 
-//  2.  prevent overloading request with rate limit
+//  6.  prevent overloading request with rate limit
 const rate_restriction = rateLimit({
   max: 100,
   windowMs: 60 * 60 * 1000, // remarks: restrict 100 visits each hour
@@ -79,7 +81,8 @@ if (!fs.existsSync(key_path)) {
   throw new Error(`[SERVER] error: SSL key not found at ${key_path}`);
 }
 
-const httpsServer: https.Server = https.createServer(
+//  remarks: https_server is exported for downtime function
+export const https_server: https.Server = https.createServer(
   {
     cert: fs.readFileSync(cert_path),
     key: fs.readFileSync(key_path),
@@ -93,22 +96,32 @@ pool.connect((err, client, release) => {
     throw new Error(`[DATABASE] error: failed to connect to database\n${err}`);
   }
   release();
-  console.log('[DATABASE] success: connected to database');
+  logger.app_logger.info('[DATABASE] success: connected to database');
 });
 
 //  Global error handler
-exp_app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err);
-  res.status(500).json({
-    status: 'failed',
-    message: `[API] error: unspecified failures at the application:\n${err}`,
+
+function global_err_handler(
+  err: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  //  setup err header info
+  const critical_err_message: string = `[SERVER] critical error internally found.`;
+  logger.critical_logger.error(critical_err_message);
+  return res.status(500).json({
+    status: 'error',
+    message: critical_err_message,
   });
-});
+}
+
+exp_app.use(global_err_handler);
 
 //  Listen to server
 const exp_server_port: number = Number(process.env.EXP_SERVER_PORT) || 8080;
 try {
-  httpsServer.listen(exp_server_port, () => {
+  https_server.listen(exp_server_port, () => {
     console.log(
       `[SERVER] success: listening to https://localhost:${exp_server_port}`,
     );
