@@ -16,6 +16,9 @@ if (!process.env.POSTGRE_CONN) {
 const pool = new Pool({
   connectionString: process.env.POSTGRE_CONN,
   connectionTimeoutMillis: 5000, // learnt: timeout pending for neon postgre wake-up
+  ssl: {
+    rejectUnauthorized: true,
+  },
 });
 
 export default pool;
