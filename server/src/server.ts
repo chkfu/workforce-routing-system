@@ -1,4 +1,5 @@
 import fs from 'fs';
+
 import path from 'path';
 import express, { Application, Request, Response, NextFunction } from 'express';
 import pool from './database/pool';
@@ -11,12 +12,13 @@ import hpp from 'hpp';
 import cookie_parser from 'cookie-parser';
 import departmentRoute from './routes/department_route';
 import logger from './infra/loggers';
+import global_err_handler from './controllers/error_controller';
 import { downtime } from './util/error_control/downtime';
 
 //  BEFORE RUNNING: handle uncaught exceptions
 //  learnt: hard downtime, as no impact when server has not been started
 //  remarks: https_server not yet available, exit directly
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', (err: Error) => {
   downtime(null, 'uncaughtException', err);
 });
 
@@ -63,11 +65,11 @@ exp_app.use(cookie_parser(process.env.COOKIE_SECRET));
 const rate_restriction = rateLimit({
   max: 100,
   windowMs: 60 * 60 * 1000, // remarks: restrict 100 visits each hour
-  statusCode: 429,
+  statusCode: 429, // learnt: code 429 for overloading requests
   message: {
-    status: 'failure',
+    status: 'failed',
     message:
-      '[SERVER] failure: client requests overloadding, please try it later.',
+      '[SERVER] error: client requests overloadding, please try it later.',
   },
   standardHeaders: true,
   legacyHeaders: false,
@@ -76,6 +78,17 @@ const rate_restriction = rateLimit({
 //  Setup express router
 exp_app.use('/api/v1', rate_restriction);
 exp_app.use('/api/v1/departments', departmentRoute);
+
+//  Catch-all handler for 404: invalid routes
+//  learnt: '*' is not supported from express 5
+exp_app.all('/{*path}', (req: Request, res: Response, next: NextFunction) => {
+  res.status(404).json({
+    status: 'failed',
+    message: `[SERVER] error: can't find ${req.originalUrl} on this server.`,
+  });
+});
+
+exp_app.use(global_err_handler);
 
 //  Setup https server with SSL/TLS
 const cert_path = path.resolve(__dirname, './ssl/localhost.pem');
@@ -96,7 +109,7 @@ const https_server: https.Server = https.createServer(
   exp_app,
 );
 
-//  Verify database connection
+//  Setup error handling middleware
 pool.connect((err, client, release) => {
   if (err) {
     logger.critical_logger.error(`[DATABASE] error: ${err.message}`);
@@ -105,25 +118,6 @@ pool.connect((err, client, release) => {
   release();
   logger.app_logger.info('[DATABASE] success: connected to database');
 });
-
-//  Global error handler
-
-function global_err_handler(
-  err: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
-  //  setup err header info
-  const critical_err_message: string = `[SERVER] critical error internally found.`;
-  logger.critical_logger.error(critical_err_message);
-  return res.status(500).json({
-    status: 'error',
-    message: critical_err_message,
-  });
-}
-
-exp_app.use(global_err_handler);
 
 //  Listen to server
 const exp_server_port: number = Number(process.env.EXP_SERVER_PORT) || 8080;
