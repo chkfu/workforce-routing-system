@@ -1,7 +1,11 @@
+import { error } from 'console';
+
 class AppError extends Error {
   statusCode: number;
   status: string;
   isOperational: boolean;
+  stack: string | undefined;
+  error: any;
 
   constructor(statusCode: number, message: string) {
     //  remarks: extract the message and status code from original error class
