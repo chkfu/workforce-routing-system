@@ -1,12 +1,14 @@
-import fs from 'fs';
-
-import path from 'path';
-import pool from './database/pool';
 import dotenv from 'dotenv';
+import path from 'path';
+import fs from 'fs';
+import pool from './database/pool';
 import https from 'https';
 import logger from './infra/loggers';
 import { downtime } from './util/error_control/downtime';
 import exp_app from './app';
+
+//  Setup dotenv env
+dotenv.config({ path: path.resolve(__dirname, '../process.env.example') });
 
 //  BEFORE RUNNING: handle uncaught exceptions
 //  learnt: hard downtime, as no impact when server has not been started
@@ -14,9 +16,6 @@ import exp_app from './app';
 process.on('uncaughtException', (err: Error) => {
   downtime(null, 'uncaughtException', err);
 });
-
-//  Setup doten
-dotenv.config({ path: `${__dirname}/../process.env.example` });
 
 //  Setup https server with SSL/TLS
 const cert_path = path.resolve(__dirname, './ssl/localhost.pem');

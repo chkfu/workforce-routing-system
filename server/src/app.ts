@@ -1,16 +1,12 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
-import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import hpp from 'hpp';
 import cookie_parser from 'cookie-parser';
-import departmentRoute from './routes/department_route';
+import dept_route from './routes/department_route';
+import staff_route from './routes/staff_route';
 import global_err_handler from './controllers/error_controller';
-
-//  Setup dotenv
-
-dotenv.config({ path: `${__dirname}/../process.env.example` });
 
 //  Setup express server
 
@@ -63,7 +59,8 @@ const rate_restriction = rateLimit({
 
 //  Setup express router
 exp_app.use('/api/v1', rate_restriction);
-exp_app.use('/api/v1/departments', departmentRoute);
+exp_app.use('/api/v1/departments', dept_route);
+exp_app.use('/api/v1/staff', staff_route);
 
 //  Catch-all handler for 404: invalid routes
 //  learnt: '*' is not supported from express 5

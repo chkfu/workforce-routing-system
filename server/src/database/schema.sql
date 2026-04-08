@@ -2,10 +2,10 @@ BEGIN;
 
 --  ENUMS
 
-CREATE TYPE IF NOT EXISTS enum_user_role AS ENUM ('candidate', 'grade_1_assistant', 'grade_2_manager', 'grade_3_executive', 'sys_admin');
-CREATE TYPE IF NOT EXISTS enum_staff_role AS ENUM ('grade_1_assistant', 'grade_2_manager', 'grade_3_executive');
-CREATE TYPE IF NOT EXISTS enum_gender AS ENUM ('male', 'female', 'unspecified');
-CREATE TYPE IF NOT EXISTS enum_prob_status AS ENUM ('selecting', 'training', 'completed', 'postponed', 'withdrawn', 'failed');
+CREATE TYPE enum_user_role AS ENUM ('candidate', 'grade_1_assistant', 'grade_2_manager', 'grade_3_executive', 'sys_admin');
+CREATE TYPE enum_staff_role AS ENUM ('grade_1_assistant', 'grade_2_manager', 'grade_3_executive');
+CREATE TYPE enum_gender AS ENUM ('male', 'female', 'other');
+CREATE TYPE enum_prob_status AS ENUM ('selecting', 'training', 'completed', 'postponed', 'withdrawn', 'failed');
 
 --  1.  core tables
 

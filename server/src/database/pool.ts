@@ -3,8 +3,7 @@ import dotenv from 'dotenv';
 import { Pool } from 'pg';
 import logger from '../infra/loggers';
 
-//  Setup dotenv
-dotenv.config({ path: path.resolve(__dirname, '../../process.env.example') });
+dotenv.config({ path: path.resolve(__dirname, '../../process.env.example'), override: true });
 
 //  Connect postgre database
 //  learnt: connection pool set for reusability, optimised performance and database management

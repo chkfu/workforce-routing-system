@@ -4,12 +4,13 @@ import pool from '../database/pool';
 
 //  1.  GET methods
 
+//  remarks: empty table refers to empty list, not necessary to crash the query
 const get_departments_batch = async () => {
   const result = await pool.query(
     `SELECT * FROM departments
     ORDER BY _id ASC;`,
   );
-  return result.rows;
+  return result.rows ?? [];
 };
 
 const get_department_by_id = async (id: string) => {
@@ -82,17 +83,17 @@ const inactivate_department_batch = async (id_arr: string[]) => {
 //  4. DELETE methods
 
 const remove_department_batch = async (id_arr: string[]) => {
-  await pool.query(
+  const result = await pool.query(
     `DELETE FROM departments
-    WHERE _id = ANY($1)`,
+    WHERE _id = ANY($1) RETURNING *;`,
     [id_arr],
   );
-  return;
+  return result.rows;
 };
 
 const empty_department_all = async () => {
-  await pool.query(`DELETE FROM departments`);
-  return;
+  const result = await pool.query(`DELETE FROM departments RETURNING *;`);
+  return result.rows;
 };
 
 //  Export

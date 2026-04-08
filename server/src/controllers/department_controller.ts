@@ -1,7 +1,7 @@
 import { RequestHandler, Request, Response, NextFunction } from 'express';
 import { handle_async } from '../util/handle_async';
 import dept_repository from '../repositories/department_repository';
-import { type_dept_row } from '../types/types';
+import { type_dept_row } from '../types';
 import AppError from '../util/error_control/AppError';
 
 //  GET /api/v1/departments
@@ -11,7 +11,9 @@ const get_departments_batch: RequestHandler = handle_async(
     const departments = await dept_repository.get_departments_batch();
     //  error handling
     if (!departments) {
-      return next(new AppError(404, '[DEPARTMENT] error: no department is found.'));
+      return next(
+        new AppError(404, '[DEPARTMENT] error: no department is found.'),
+      );
     }
     //  normal response
     res.status(200).json({
@@ -36,14 +38,16 @@ const get_department_by_id: RequestHandler = handle_async(
     const department = await dept_repository.get_department_by_id(id);
     //  error handling
     if (!department) {
-      return next(new AppError(404, '[DEPARTMENT] error: no department is found.'));
+      return next(
+        new AppError(404, '[DEPARTMENT] error: no department is found.'),
+      );
     }
     //  normal response
     res.status(200).json({
       status: 'success',
       count: 1,
       data: {
-        department,
+        department: department,
       },
     });
   },
@@ -59,7 +63,7 @@ const create_department_batch: RequestHandler = handle_async(
     //  learnt: prevent sql injection without inserting req.body directly.
     //  learnt: postgre `CREATE` runs in sequence, required Promise for handling batch items
     const departments = await Promise.all(
-      dept_arr.map((el: type_dept_row) => {
+      dept_arr.map(async (el: type_dept_row) => {
         const { dept_name, dept_capacity, importance_weight, is_active } = el;
         // reamrks: put the new string into service function to proceed
         return dept_repository.create_department_batch(
@@ -72,7 +76,9 @@ const create_department_batch: RequestHandler = handle_async(
     );
     //  error handling
     if (!departments) {
-      return next(new AppError(404, '[DEPARTMENT] error: no department is found.'));
+      return next(
+        new AppError(404, '[DEPARTMENT] error: no department is found.'),
+      );
     }
     //  normal response
     res.status(201).json({
@@ -85,7 +91,7 @@ const create_department_batch: RequestHandler = handle_async(
   },
 );
 
-//  PATCH /api/v1/departments
+//  PATCH  /api/v1/departments
 //  INPUT: array of id strings, single input for each column update (enable null)
 const update_department_details_batch: RequestHandler = handle_async(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -110,7 +116,9 @@ const update_department_details_batch: RequestHandler = handle_async(
       );
     //  error handling
     if (!departments) {
-      return next(new AppError(404, '[DEPARTMENT] error: no department is found.'));
+      return next(
+        new AppError(404, '[DEPARTMENT] error: no department is found.'),
+      );
     }
     //  normal response
     res.status(200).json({
@@ -139,7 +147,9 @@ const activate_department_batch: RequestHandler = handle_async(
     );
     //  error handling
     if (!departments) {
-      return next(new AppError(404, '[DEPARTMENT] error: no department is found.'));
+      return next(
+        new AppError(404, '[DEPARTMENT] error: no department is found.'),
+      );
     }
     //  normal response
     res.status(200).json({
@@ -168,7 +178,9 @@ const inactivate_department_batch: RequestHandler = handle_async(
     );
     //  error handling
     if (!departments) {
-      return next(new AppError(404, '[DEPARTMENT] error: no department is found.'));
+      return next(
+        new AppError(404, '[DEPARTMENT] error: no department is found.'),
+      );
     }
     //  normal response
     res.status(200).json({
@@ -191,8 +203,14 @@ const remove_department_batch: RequestHandler = handle_async(
       typeof id === 'string' ? id : id[0],
     );
     const id_set: Set<string> = new Set(id_arr);
-    await dept_repository.remove_department_batch(Array.from(id_set));
-    res.status(204).send();
+    const departments = await dept_repository.remove_department_batch(
+      Array.from(id_set),
+    );
+    if (departments.length < 1)
+      return next(
+        new AppError(404, '[DEPARTMENT] error: no department is found.'),
+      );
+    return res.status(204).send();
   },
 );
 
@@ -201,13 +219,16 @@ const remove_department_batch: RequestHandler = handle_async(
 //  remarks: return to empty table
 const empty_department_all: RequestHandler = handle_async(
   async (req: Request, res: Response, next: NextFunction) => {
-    await dept_repository.empty_department_all();
-    res.status(204).send();
+    const departments = await dept_repository.empty_department_all();
+    if (departments.length < 1)
+      return next(
+        new AppError(404, '[DEPARTMENT] error: no department is found.'),
+      );
+    return res.status(204).send();
   },
 );
 
 //  Export
-
 export default {
   get_departments_batch,
   get_department_by_id,

@@ -1,6 +1,6 @@
 //  remarks: refer to official postgre error code list: https://www.postgresql.org/docs/current/errcodes-appendix.html
 //           keep operational errors only
-type PostgreErrList = Record<string, object | string>;
+type PostgreErrList = Record<string, { message: string; err_code: string }>;
 
 //  learnt: 400 for bad request, 404 for not found, 409 for data conflicts
 export const postgre_err_list: PostgreErrList = {
