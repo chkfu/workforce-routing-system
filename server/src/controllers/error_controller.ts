@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import loggers from '../infra/loggers';
 import { postgre_err_list } from '../util/error_control/postgre_err_list';
+import ValueError from '../util/error_control/classes/ValueError';
 
 //  Global error handler
 //  remarks: operational errors refers to failed status with code 4xx
@@ -17,11 +18,18 @@ function global_err_handler(
   let isOperational: boolean = err.isOperational || false; // reamrks: customised column, update by manual
 
   //  A. operational cases
+
+  //  1. for input value error
+  if (err instanceof ValueError) {
+    return res.status(400).json({ status: 'failed', message: err.message });
+  }
+
+  //  2. for postgres cases
   if (err.code && typeof err.code === 'string') {
     const pgcode_full: string = err.code;
     const pgcode_type: string = pgcode_full.slice(0, 2);
 
-    //  1. postgre related — try exact match first, fallback to 2-char prefix
+    //  2a. try exact match first, fallback to 2-char prefix
     const match =
       postgre_err_list[pgcode_full] ?? postgre_err_list[pgcode_type];
     if (match && typeof match === 'object') {
@@ -29,7 +37,7 @@ function global_err_handler(
       message = `[POSTGRES] error: ${match.message}. ${err.message || ''}`;
     }
 
-    //  2. without expectation
+    //  2b. without expectation
     else {
       statusCode = 400;
       message = `[APP] error: operational condition not specified - ${err.message || ''}`;

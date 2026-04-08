@@ -14,6 +14,7 @@ router
   .patch(staff_controller.update_staff_detail_batch)
   .delete(staff_controller.remove_staff_batch);
 
+router.route('/activation').patch(staff_controller.update_staff_active_batch);
 router.route('/empty').delete(staff_controller.empty_staff_all);
 
 router.route('/:id').get(staff_controller.get_staff_by_id);

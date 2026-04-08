@@ -14,10 +14,9 @@ router
   .patch(dept_controller.update_department_details_batch)
   .delete(dept_controller.remove_department_batch);
 
-router.route('/activate').patch(dept_controller.activate_department_batch);
-
-router.route('/inactivate').patch(dept_controller.inactivate_department_batch);
-
+router
+  .route('/activation')
+  .patch(dept_controller.update_department_active_batch);
 router.route('/empty').delete(dept_controller.empty_department_all);
 
 router.route('/:id').get(dept_controller.get_department_by_id);

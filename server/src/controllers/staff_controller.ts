@@ -1,8 +1,9 @@
 import { RequestHandler, Request, Response, NextFunction } from 'express';
 import { handle_async } from '../util/handle_async';
-import AppError from '../util/error_control/AppError';
+import AppError from '../util/error_control/classes/AppError';
+import ValueError from '../util/error_control/classes/ValueError';
 import staff_repository from '../repositories/staff_repository';
-import { type_staff_row } from '../types';
+import { type_staff_row } from '../util/types';
 
 //  GET  https://localhost:8080/api/v1/staff
 //  INPUT:  null
@@ -164,7 +165,46 @@ const update_staff_detail_batch: RequestHandler = handle_async(
   },
 );
 
-//  DELETE  https://localhost:8080/api/v1/staff
+//  PATCH /api/v1/staff/activation
+//  INPUT: array of staff ids, is_active as boolean
+//  remartks: for soft-deletion, records will still be kept in database
+const update_staff_active_batch: RequestHandler = handle_async(
+  async (req: Request, res: Response, next: NextFunction) => {
+    //  declarations
+    const id_arr: string[] = req.body._ids.map((id: string | string[]) =>
+      typeof id === 'string' ? id : id[0],
+    );
+    const id_set: Set<string> = new Set(id_arr);
+    const is_active: boolean | null = req.body.is_active ?? null;
+    if (is_active == null) {
+      return next(
+        new ValueError(
+          400,
+          '[STAFF] error: invalid value input of req.body.is_active.',
+        ),
+      );
+    }
+    // remarks: update is_active as false
+    const staff = await staff_repository.update_staff_active_batch(
+      Array.from(id_set),
+      is_active,
+    );
+    //  error handling
+    if (!staff) {
+      return next(new AppError(404, '[STAFF] error: no staff is found.'));
+    }
+    //  normal response
+    res.status(200).json({
+      status: 'success',
+      count: staff.length,
+      data: {
+        staff,
+      },
+    });
+  },
+);
+
+//  DELETE  /api/v1/staff
 //  INPUT:  array of ids
 const remove_staff_batch: RequestHandler = handle_async(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -216,6 +256,7 @@ export default {
   get_staff_by_id,
   create_staff_batch,
   update_staff_detail_batch,
+  update_staff_active_batch,
   remove_staff_batch,
   empty_staff_all,
 };

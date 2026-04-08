@@ -105,6 +105,17 @@ const update_staff_detail_batch = async (
   return result.rows;
 };
 
+const update_staff_active_batch = async (id_arr: string[], status: boolean) => {
+  const result = await pool.query(
+    `UPDATE staff
+     SET is_active = $1, updated_at = CURRENT_TIMESTAMP
+     WHERE _id = ANY($2)
+     RETURNING *;`,
+    [status, id_arr],
+  );
+  return result.rows;
+};
+
 //  4. DELETE methods
 
 const remove_staff_batch = async (id_arr: string[]) => {
@@ -127,6 +138,7 @@ export default {
   get_staff_by_id,
   create_staff_batch,
   update_staff_detail_batch,
+  update_staff_active_batch,
   remove_staff_batch,
   empty_staff_all,
 };

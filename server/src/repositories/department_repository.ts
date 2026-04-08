@@ -58,24 +58,16 @@ const update_department_details_batch = async (
   return result.rows;
 };
 
-const activate_department_batch = async (id_arr: string[]) => {
+const update_department_active_batch = async (
+  id_arr: string[],
+  status: boolean,
+) => {
   const result = await pool.query(
     `UPDATE departments
-     SET is_active = true, updated_at = CURRENT_TIMESTAMP
-     WHERE _id = ANY($1)
+     SET is_active = $1, updated_at = CURRENT_TIMESTAMP
+     WHERE _id = ANY($2)
      RETURNING *;`,
-    [id_arr],
-  );
-  return result.rows;
-};
-
-const inactivate_department_batch = async (id_arr: string[]) => {
-  const result = await pool.query(
-    `UPDATE departments
-     SET is_active = false, updated_at = CURRENT_TIMESTAMP
-     WHERE _id = ANY($1)
-     RETURNING *;`,
-    [id_arr],
+    [status, id_arr],
   );
   return result.rows;
 };
@@ -103,8 +95,7 @@ export default {
   get_department_by_id,
   create_department_batch,
   update_department_details_batch,
-  activate_department_batch,
-  inactivate_department_batch,
+  update_department_active_batch,
   remove_department_batch,
   empty_department_all,
 };

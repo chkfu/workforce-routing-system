@@ -1,8 +1,9 @@
 import { RequestHandler, Request, Response, NextFunction } from 'express';
 import { handle_async } from '../util/handle_async';
 import dept_repository from '../repositories/department_repository';
-import { type_dept_row } from '../types';
-import AppError from '../util/error_control/AppError';
+import { type_dept_row } from '../util/types';
+import AppError from '../util/error_control/classes/AppError';
+import ValueError from '../util/error_control/classes/ValueError';
 
 //  GET /api/v1/departments
 //  INPUT: none
@@ -131,50 +132,29 @@ const update_department_details_batch: RequestHandler = handle_async(
   },
 );
 
-//  PATCH /api/v1/departments/activate
-//  INPUT: array of department ids
+//  PATCH /api/v1/departments/activation
+//  INPUT: array of department ids, is_active as boolean
 //  remarks: for recovery for inactive records for flexibility
-const activate_department_batch: RequestHandler = handle_async(
+const update_department_active_batch: RequestHandler = handle_async(
   async (req: Request, res: Response, next: NextFunction) => {
     //  declarations
     const id_arr: string[] = req.body._ids.map((id: string | string[]) =>
       typeof id === 'string' ? id : id[0],
     );
     const id_set: Set<string> = new Set(id_arr);
-    // remarks: update is_active as true
-    const departments = await dept_repository.activate_department_batch(
-      Array.from(id_set),
-    );
-    //  error handling
-    if (!departments) {
+    const is_active: boolean | null = req.body.is_active ?? null;
+    if (is_active == null) {
       return next(
-        new AppError(404, '[DEPARTMENT] error: no department is found.'),
+        new ValueError(
+          400,
+          '[DEPARTMENT] error: invalid value input of req.body.is_active.',
+        ),
       );
     }
-    //  normal response
-    res.status(200).json({
-      status: 'success',
-      count: departments.length,
-      data: {
-        departments,
-      },
-    });
-  },
-);
-
-//  PATCH /api/v1/departments/inactivate
-//  INPUT: array of department ids
-//  remartks: for soft-deletion, records will still be kept in database
-const inactivate_department_batch: RequestHandler = handle_async(
-  async (req: Request, res: Response, next: NextFunction) => {
-    //  declarations
-    const id_arr: string[] = req.body._ids.map((id: string | string[]) =>
-      typeof id === 'string' ? id : id[0],
-    );
-    const id_set: Set<string> = new Set(id_arr);
-    // remarks: update is_active as false
-    const departments = await dept_repository.inactivate_department_batch(
+    // remarks: update is_active as true
+    const departments = await dept_repository.update_department_active_batch(
       Array.from(id_set),
+      is_active,
     );
     //  error handling
     if (!departments) {
@@ -234,8 +214,7 @@ export default {
   get_department_by_id,
   create_department_batch,
   update_department_details_batch,
-  activate_department_batch,
-  inactivate_department_batch,
+  update_department_active_batch,
   remove_department_batch,
   empty_department_all,
 };

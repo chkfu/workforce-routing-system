@@ -1,5 +1,3 @@
-import { error } from 'console';
-
 class AppError extends Error {
   statusCode: number;
   status: string;
