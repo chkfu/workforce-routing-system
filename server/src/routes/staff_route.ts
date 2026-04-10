@@ -11,7 +11,7 @@ router
   .route('/')
   .get(staff_controller.get_staff_batch)
   .post(staff_controller.create_staff_batch)
-  .patch(staff_controller.update_staff_detail_batch)
+  .patch(staff_controller.update_staff_details_batch)
   .delete(staff_controller.remove_staff_batch);
 
 router.route('/activation').patch(staff_controller.update_staff_active_batch);

@@ -7,7 +7,7 @@ import { TDepartmentBase } from '../util/types';
 
 //  learnt: align to keys of type with read-only
 //  reamrks: skipped the auto updated cols (_id, created_at, updated_at)
-const DEPARTMENT_COLUMNS = [
+const department_cols = [
   'dept_name',
   'dept_capacity',
   'importance_weight',
@@ -16,7 +16,7 @@ const DEPARTMENT_COLUMNS = [
 
 const dept_repository = new RepositoryFactory(
   'departments',
-  [...DEPARTMENT_COLUMNS], //  remarks: hard-code, as fail to get column name from types
+  [...department_cols], //  remarks: hard-code, as fail to get column name from types
   '_id',
 );
 
@@ -39,7 +39,7 @@ const get_departments_batch: RequestHandler = handle_async(
       status: 'success',
       count: departments.length,
       data: {
-        departments: departments || null,
+        departments,
       },
     });
   },
@@ -68,7 +68,7 @@ const get_department_by_id: RequestHandler = handle_async(
       status: 'success',
       count: 1,
       data: {
-        department: department,
+        department,
       },
     });
   },
