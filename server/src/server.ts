@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
-import pool from './database/pool';
+import pool from './infra/database';
 import https from 'https';
 import logger from './infra/loggers';
 import { downtime } from './util/error_control/downtime';
@@ -18,8 +18,8 @@ process.on('uncaughtException', (err: Error) => {
 });
 
 //  Setup https server with SSL/TLS
-const cert_path = path.resolve(__dirname, './ssl/localhost.pem');
-const key_path = path.resolve(__dirname, './ssl/localhost-key.pem');
+const cert_path = path.resolve(__dirname, './infra/ssl/localhost.pem');
+const key_path = path.resolve(__dirname, './infra/ssl/localhost-key.pem');
 
 if (!fs.existsSync(cert_path)) {
   const err_message: string = `[SERVER] error: SSL cert not found at ${cert_path}`;

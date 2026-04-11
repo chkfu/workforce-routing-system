@@ -1,9 +1,12 @@
 import path from 'path';
 import dotenv from 'dotenv';
 import { Pool } from 'pg';
-import logger from '../infra/loggers';
+import logger from '../loggers';
 
-dotenv.config({ path: path.resolve(__dirname, '../../process.env.example'), override: true });
+dotenv.config({
+  path: path.resolve(__dirname, '../../process.env.example'),
+  override: true,
+});
 
 //  Connect postgre database
 //  learnt: connection pool set for reusability, optimised performance and database management
@@ -12,7 +15,7 @@ if (!process.env.POSTGRE_CONN) {
   logger.critical_logger.error(err_message);
   throw new Error(err_message);
 }
-const pool = new Pool({
+const pg_pool = new Pool({
   connectionString: process.env.POSTGRE_CONN,
   connectionTimeoutMillis: 15000, // learnt: timeout pending for neon postgre wake-up
   ssl: {
@@ -20,4 +23,4 @@ const pool = new Pool({
   },
 });
 
-export default pool;
+export default pg_pool;

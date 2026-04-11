@@ -1,7 +1,17 @@
+/*
+  [DISCLAIMER]
+
+  Error Controller serves as global error handler for managing potential errors 
+  during the applciation runtime. 
+  
+  It adopts custom error classes to standardise error types and logging mechanisms 
+  to support traceability, debugging and observability.
+*/
+
 import { Request, Response, NextFunction } from 'express';
 import loggers from '../infra/loggers';
-import { postgre_err_list } from '../util/error_control/postgre_err_list';
-import ValueError from '../util/error_control/classes/ValueError';
+import { postgre_err_list } from '../infra/database/pg_codes';
+import ValueError from '../util/error_control/collection/ValueError';
 
 //  Global error handler
 //  remarks: operational errors refers to failed status with code 4xx

@@ -1,3 +1,10 @@
+/*
+  [DISCLAIMER]
+
+  handle_async is the wrapper functions for simplified the try-catch functions
+  with the reusable format.
+*/
+
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 
 //  remarks: prevent repeated try-catch handling

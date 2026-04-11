@@ -41,6 +41,10 @@ This file records the major version changes of the projects.
 
 - fixed postgre warning of ssl related settings at `pool.ts`
 
+### Delete
+
+- removed controller and repositories scripts for table `departments` and `staff`
+
 <br/>
 
 ## [1.0.1] - Apr 4, 2026

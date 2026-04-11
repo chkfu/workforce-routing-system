@@ -1,3 +1,12 @@
+/*
+  [DISCLAIMER]
+
+  Logger is the centralised logging mechanism to monitor the potential 
+  debugging points and existed failures for further maintenacne. Its rotational
+  setup and standard format enables sustainable management with the error 
+  handling records.
+*/
+
 import { createLogger, format, transports } from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
 
@@ -7,7 +16,7 @@ const { combine, timestamp, printf, colorize, errors, label } = format;
 //  Setup log files format
 const createRotateTransport = (filename: string, level: string) => {
   return new DailyRotateFile({
-    filename: `./src/infra/logs/${filename}-%DATE%.log`,
+    filename: `./logs/${filename}-%DATE%.log`,
     datePattern: 'YYYY-MM-DD',
     zippedArchive: true,
     maxSize: '128m',

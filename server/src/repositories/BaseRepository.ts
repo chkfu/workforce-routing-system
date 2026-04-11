@@ -1,16 +1,16 @@
 /*
   [DISCLAIMER]
 
-  Base Controller serves as centralised management of CRUD functionalities
+  Base Repository serves as centralised management of SQL queries
   between different tables. 
   
-  Additional controller scripts will only serve for specific business requirements 
+  Additional repository scripts will only serve for specific business requirements 
   for their affiliated table.
 */
 
-import pool from '../database/pool';
-import KeyError from '../util/error_control/classes/KeyError';
-import ValueError from '../util/error_control/classes/ValueError';
+import pool from '../infra/database';
+import KeyError from '../util/error_control/collection/KeyError';
+import ValueError from '../util/error_control/collection/ValueError';
 import { TSchemaBase } from '../util/types';
 
 /*

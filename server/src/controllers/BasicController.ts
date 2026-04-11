@@ -1,8 +1,18 @@
+/*
+  [DISCLAIMER]
+
+  Base Controller serves as centralised management of CRUD functionalities
+  between different tables. 
+  
+  Additional controller scripts will only serve for specific business requirements 
+  for their affiliated table.
+*/
+
 import { RequestHandler, Request, Response, NextFunction } from 'express';
-import { handle_async } from '../util/handle_async';
+import { handle_async } from '../util/middlewares/handle_async';
 import BaseRepository from '../repositories/BaseRepository';
-import AppError from '../util/error_control/classes/AppError';
-import ValueError from '../util/error_control/classes/ValueError';
+import AppError from '../util/error_control/collection/AppError';
+import ValueError from '../util/error_control/collection/ValueError';
 import { TSchemaBase } from '../util/types';
 
 //  CLASS
