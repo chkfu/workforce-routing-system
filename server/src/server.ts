@@ -4,7 +4,7 @@ import fs from 'fs';
 import pool from './infra/database';
 import https from 'https';
 import logger from './infra/loggers';
-import { downtime } from './util/error_control/downtime';
+import { downtime } from './infra/utils/downtime';
 import exp_app from './app';
 
 //  Setup dotenv env

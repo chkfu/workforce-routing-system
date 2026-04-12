@@ -1,5 +1,5 @@
 import https from 'https';
-import logger from '../../infra/loggers';
+import logger from '../loggers';
 
 export const downtime = function (
   server: https.Server | null,

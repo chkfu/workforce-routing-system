@@ -1,31 +1,19 @@
 import express from 'express';
 import BaseController from '../controllers/BasicController';
-import { TStaffBase } from '../util/types';
+import { TStaffBase, TSchemaBase } from '../util/types';
+import db_structure from '../util/config/db_structure';
 
 //  Import router
 
 const router = express.Router();
 
-//  Setup new controller
-//  for binding entry criteria, added 'satisfies readonly (keyof TDepartmentBase)'
-const staff_cols = [
-  'first_name',
-  'last_name',
-  'gender',
-  'work_position',
-  'work_grade',
-  'work_email',
-  'work_ext',
-  'dept_id',
-  'date_hired',
-  'date_quit',
-  'is_active',
-] as const satisfies readonly (keyof TStaffBase)[];
-
-const staff_controller = new BaseController<TStaffBase>(
-  'staff',
-  [...staff_cols], // remarks: for suit into string[] required
-  '_id',
+const staff_controller = new BaseController<TStaffBase & TSchemaBase>(
+  db_structure.staff.table,
+  [...db_structure.staff.columns] as Extract<
+    keyof (TStaffBase & TSchemaBase),
+    string
+  >[], // remarks: for suit into string[] required
+  db_structure.staff.primary_key,
 );
 
 //  Build routes

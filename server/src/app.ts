@@ -6,7 +6,7 @@ import hpp from 'hpp';
 import cookie_parser from 'cookie-parser';
 import dept_route from './routes/department_route';
 import staff_route from './routes/staff_route';
-import global_err_handler from './controllers/error_controller';
+import global_err_handler from './infra/middlewares/error_handler';
 
 //  Setup express server
 

@@ -9,8 +9,8 @@
 */
 
 import pool from '../infra/database';
-import KeyError from '../util/error_control/collection/KeyError';
-import ValueError from '../util/error_control/collection/ValueError';
+import KeyError from '../util/errors/KeyError';
+import ValueError from '../util/errors/ValueError';
 import { TSchemaBase } from '../util/types';
 
 /*
@@ -28,7 +28,7 @@ import { TSchemaBase } from '../util/types';
 class BaseRepository<T> {
   //  1.  Attributes
   private table: string;
-  private columns: string[];
+  private columns: Extract<keyof (T & TSchemaBase), string>[];
   private primary_key: string;
 
   //  2.  Constructor

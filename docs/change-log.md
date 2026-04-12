@@ -36,6 +36,7 @@ This file records the major version changes of the projects.
 - refactored the duplicated repository codes under centralised class at `BaseRepository.ts`
 - refactored the duplicated controller codes under centralised class at `BaseController.ts`
 - refined sql queries to prevent direct sql injection
+- re-organised file structure for the server side
 
 ### Fixed
 

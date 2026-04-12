@@ -1,24 +1,19 @@
 import express from 'express';
-import BaseController from '../controllers/BasicController';
-import { TDepartmentBase } from '../util/types';
+import DepartmentsController from '../controllers/DepartmentsController';
+import { TDepartmentBase, TSchemaBase } from '../util/types';
+import db_structure from '../util/config/db_structure';
 
 //  Import router
 
 const router = express.Router();
 
-//  Setup new controller
-//  for binding entry criteria, added 'satisfies readonly (keyof TDepartmentBase)'
-const department_cols = [
-  'dept_name',
-  'dept_capacity',
-  'importance_weight',
-  'is_active',
-] as const satisfies readonly (keyof TDepartmentBase)[];
-
-const dept_controller = new BaseController<TDepartmentBase>(
-  'departments',
-  [...department_cols], // remarks: for suit into string[] required
-  '_id',
+const dept_controller = new DepartmentsController(
+  db_structure.departments.table,
+  [...db_structure.departments.columns] as Extract<
+    keyof (TDepartmentBase & TSchemaBase),
+    string
+  >[], // remarks: for suit into string[] required
+  db_structure.departments.primary_key,
 );
 
 //  Build routes

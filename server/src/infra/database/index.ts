@@ -4,7 +4,7 @@ import { Pool } from 'pg';
 import logger from '../loggers';
 
 dotenv.config({
-  path: path.resolve(__dirname, '../../process.env.example'),
+  path: path.resolve(__dirname, '../../../process.env.example'),
   override: true,
 });
 

@@ -9,10 +9,10 @@
 */
 
 import { RequestHandler, Request, Response, NextFunction } from 'express';
-import { handle_async } from '../util/middlewares/handle_async';
+import { handle_async } from '../infra/middlewares/handle_async';
 import BaseRepository from '../repositories/BaseRepository';
-import AppError from '../util/error_control/collection/AppError';
-import ValueError from '../util/error_control/collection/ValueError';
+import AppError from '../util/errors/AppError';
+import ValueError from '../util/errors/ValueError';
 import { TSchemaBase } from '../util/types';
 
 //  CLASS
@@ -29,15 +29,18 @@ class BaseController<T> {
     table: string,
     columns: Extract<keyof T, string>[],
     primary_key: string,
+    repository?: BaseRepository<T>,
   ) {
     this.table = table;
     this.columns = columns;
     this.primary_key = primary_key;
-    this.repository = new BaseRepository(
-      this.table,
-      this.columns, //  remarks: hard-code, as fail to get column name from types
-      this.primary_key,
-    );
+    this.repository =
+      repository ??
+      new BaseRepository(
+        this.table,
+        this.columns, //  remarks: hard-code, as fail to get column name from types
+        this.primary_key,
+      );
   }
 
   //  Methods
