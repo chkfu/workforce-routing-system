@@ -12,6 +12,9 @@ import cdd_edu_route from './routes/cdd_edu_route';
 import cdd_exp_route from './routes/cdd_exp_route';
 import cdd_test_route from './routes/cdd_test_route';
 import cdd_pref_route from './routes/cdd_pref_route';
+import slt_weight_route from './routes/slt_weight_route';
+import slt_criteria_route from './routes/slt_criteria_route';
+import slt_score_route from './routes/slt_score_route';
 import global_err_handler from './infra/middlewares/error_handler';
 
 //  Setup express server
@@ -73,6 +76,9 @@ exp_app.use('/api/v1/candidate_education', cdd_edu_route);
 exp_app.use('/api/v1/candidate_experience', cdd_exp_route);
 exp_app.use('/api/v1/candidate_tests', cdd_test_route);
 exp_app.use('/api/v1/candidate_preferences', cdd_pref_route);
+exp_app.use('/api/v1/selection_weighting', slt_weight_route);
+exp_app.use('/api/v1/selection_criteria', slt_criteria_route);
+exp_app.use('/api/v1/selection_scoring', slt_score_route);
 
 //  Catch-all handler for 404: invalid routes
 //  learnt: '*' is not supported from express 5

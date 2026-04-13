@@ -168,6 +168,90 @@ CREATE TABLE IF NOT EXISTS candidate_preferences(
   is_active BOOLEAN DEFAULT TRUE
 );
 
+--  3. Selection Stage
+
+CREATE TABLE IF NOT EXISTS select_weighting(
+  _id  SERIAL  PRIMARY KEY,
+  strategy_name  VARCHAR(50),
+  strategy_goal  TEXT,
+  weight_qual  NUMERIC(4,3),
+  weight_exp  NUMERIC(4,3),
+  weight_tests  NUMERIC(4,3),
+  created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  is_active  BOOLEAN DEFAULT TRUE
+);
+
+--  learnt: using JSONB for complex criteria for matching, with O(log n) query
+CREATE TABLE IF NOT EXISTS select_criteria (
+  _id  SERIAL PRIMARY KEY,
+  dept_id  INTEGER UNIQUE,
+  min_score_qual  NUMERIC(5,2) DEFAULT 0,
+  min_score_exp  NUMERIC(5,2) DEFAULT 0,
+  min_score_tests  NUMERIC(5,2) DEFAULT 0,
+  pref_criteria  JSONB,
+  blacklist  JSONB,
+  CONSTRAINT fk_dept 
+    FOREIGN KEY (dept_id) REFERENCES departments(_id)
+    ON DELETE CASCADE,
+  created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  is_active  BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE IF NOT EXISTS select_scoring(
+  _id  SERIAL  PRIMARY KEY,
+  candidate_id  INTEGER,
+  select_weighting_id  INTEGER,
+  base_score_qual  NUMERIC(5,2)  DEFAULT 20,
+  base_score_exp  NUMERIC(5,2)  DEFAULT 20,
+  base_score_tests  NUMERIC(5,2)  DEFAULT 20,
+  score_foundation  NUMERIC(5,2)  DEFAULT 0,
+  score_preference  NUMERIC(5,2)  DEFAULT 0,
+  CONSTRAINT fk_weighting_scores_select
+    FOREIGN KEY (select_weighting_id)
+    REFERENCES select_weighting(_id)
+    ON DELETE RESTRICT,
+  CONSTRAINT fk_candidate_scores_select
+    FOREIGN KEY (candidate_id)
+    REFERENCES candidates(_id)
+    ON DELETE RESTRICT,
+  created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  is_active  BOOLEAN DEFAULT TRUE
+);
+
+--  4. probation stage
+
+CREATE TABLE IF NOT EXISTS probation_intakes(
+  _id  SERIAL  PRIMARY KEY,
+  candidate_id  INTEGER,
+  department_id  INTEGER,
+  select_weight_id  INTEGER,
+  select_score_id  INTEGER,
+  intake_round  INTEGER,
+  training_start  DATE,
+  training_end  DATE,
+  CONSTRAINT fk_candidate_training
+    FOREIGN KEY (candidate_id)
+    REFERENCES candidates(_id)
+    ON DELETE SET NULL,
+  CONSTRAINT fk_department_training
+    FOREIGN KEY (department_id)
+    REFERENCES departments(_id)
+    ON DELETE SET NULL,
+  CONSTRAINT fk_weighting_training
+    FOREIGN KEY (select_weight_id)
+    REFERENCES select_weighting(_id)
+    ON DELETE SET NULL,
+  CONSTRAINT fk_score_training
+    FOREIGN KEY (select_score_id)
+    REFERENCES select_scoring(_id)
+    ON DELETE SET NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  is_active BOOLEAN DEFAULT TRUE
+);
 
 
 COMMIT;

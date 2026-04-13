@@ -139,26 +139,26 @@ CREATE TABLE IF NOT EXISTS select_weighting(
   weight_qual  NUMERIC(4,3),
   weight_exp  NUMERIC(4,3),
   weight_tests  NUMERIC(4,3),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active BOOLEAN DEFAULT TRUE
+  created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  is_active  BOOLEAN DEFAULT TRUE
 );
 
 --  learnt: using JSONB for complex criteria for matching, with O(log n) query
 CREATE TABLE select_criteria (
-  _id SERIAL PRIMARY KEY,
-  dept_id INTEGER UNIQUE,
-  min_score_qual NUMERIC(5,2) DEFAULT 0,
-  min_score_exp NUMERIC(5,2) DEFAULT 0,
-  min_score_tests NUMERIC(5,2) DEFAULT 0,
+  _id  SERIAL PRIMARY KEY,
+  dept_id  INTEGER UNIQUE,
+  min_score_qual  NUMERIC(5,2) DEFAULT 0,
+  min_score_exp  NUMERIC(5,2) DEFAULT 0,
+  min_score_tests  NUMERIC(5,2) DEFAULT 0,
   pref_criteria  JSONB,
   blacklist  JSONB,
   CONSTRAINT fk_dept 
     FOREIGN KEY (dept_id) REFERENCES departments(_id)
     ON DELETE CASCADE,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active BOOLEAN DEFAULT TRUE
+  created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  is_active  BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE IF NOT EXISTS calculate_select_scores(
@@ -178,9 +178,9 @@ CREATE TABLE IF NOT EXISTS calculate_select_scores(
     FOREIGN KEY (candidate_id)
     REFERENCES candidates(_id)
     ON DELETE RESTRICT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active BOOLEAN DEFAULT TRUE
+  created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  is_active  BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE IF NOT EXISTS select_decision(

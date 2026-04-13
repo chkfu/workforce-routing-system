@@ -112,6 +112,67 @@ const db_structure = {
     ],
     primary_key: SHARED_PRIMARY_KEY,
   },
+
+  //  3.  selection stage
+
+  slt_weight: {
+    table: 'select_weighting',
+    columns: [
+      'strategy_name',
+      'strategy_goal',
+      'weight_qual',
+      'weight_exp',
+      'weight_tests',
+      'is_active',
+    ],
+    primary_key: SHARED_PRIMARY_KEY,
+  },
+
+  slt_criteria: {
+    table: 'select_criteria',
+    columns: [
+      'dept_id',
+      'min_score_qual',
+      'min_score_exp',
+      'min_score_tests',
+      'pref_criteria',
+      'blacklist',
+      'is_active',
+    ],
+    primary_key: SHARED_PRIMARY_KEY,
+  },
+
+  slt_score: {
+    table: 'select_scoring',
+    columns: [
+      'candidate_id',
+      'select_weighting_id',
+      'base_score_qual',
+      'base_score_exp',
+      'base_score_tests',
+      'score_foundation',
+      'score_preference',
+      'is_active',
+    ],
+    primary_key: SHARED_PRIMARY_KEY,
+  },
+
+  //  4.  probation stage
+
+  pbt_intakes: {
+    table: 'probation_intakes',
+    columns: [
+      'candidate_id',
+      'department_id',
+      'select_weight_id',
+      'select_score_id',
+      'intake_round',
+      'training_start',
+      'training_end',
+      'is_active',
+    ],
+    primary_key: SHARED_PRIMARY_KEY,
+  },
 };
 
 //  Export

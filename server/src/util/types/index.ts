@@ -103,3 +103,52 @@ export type TCddPrefBase = {
   pref_dept_3rd: number;
   is_active: boolean;
 };
+
+//  3.  Select stage
+
+//  tags: select_weighting
+export type TSltWeightBase = {
+  strategy_name: string;
+  strategy_goal?: string;
+  weight_qual: number;
+  weight_exp: number;
+  weight_tests: number;
+  is_active: boolean;
+};
+
+//  tags: select_criteria
+export type TSltCriteriaBase = {
+  dept_id: number;
+  min_score_qual: number;
+  min_score_exp: number;
+  min_score_tests: number;
+  pref_criteria: Record<string, any>;
+  blacklist: Record<string, any>;
+  is_active: boolean;
+};
+
+//  tags: select_scoring
+export type TSltScoreBase = {
+  candidate_id: number;
+  select_weighting_id: number;
+  base_score_qual: number;
+  base_score_exp: number;
+  base_score_tests: number;
+  score_foundation: number;
+  score_preference: number;
+  is_active: boolean;
+};
+
+//  4.  Probation stage
+
+//  tags: prob_intakes
+export type TPbtIntakeBase = {
+  candidate_id: number;
+  department_id: number;
+  select_weight_id: number;
+  select_score_id: number;
+  intake_round: number;
+  training_start: Date;
+  training_end: Date;
+  is_active: boolean;
+};
