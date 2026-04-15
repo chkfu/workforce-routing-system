@@ -1,7 +1,8 @@
 import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
-import pool from './infra/database';
+import pg_pool from './infra/database/postgres';
+import redis from './infra/database/redis';
 import https from 'https';
 import logger from './infra/loggers';
 import { downtime } from './infra/utils/downtime';
@@ -40,15 +41,29 @@ const https_server: https.Server = https.createServer(
   exp_app,
 );
 
-//  Setup error handling middleware
-pool.connect((err, client, release) => {
+//  Setup postgres database connection
+pg_pool.connect((err, client, release) => {
   if (err) {
     logger.critical_logger.error(`[DATABASE] error: ${err.message}`);
     throw err;
   }
   release();
-  logger.app_logger.info('[DATABASE] success: connected to database');
+  logger.app_logger.info('[DATABASE] success: connected to database.');
 });
+
+//  Setup redis database conenction
+
+redis
+  .connect()
+  .then(() => {
+    logger.app_logger.info('[DATABASE] success: connected to redis.');
+  })
+  .catch((err: Error) => {
+    logger.critical_logger.error(
+      `[REDIS] error: failed to conenct to redis dataabse.\n${err.message}`,
+    );
+    throw err;
+  });
 
 //  Listen to server
 const exp_server_port: number = Number(process.env.EXP_SERVER_PORT) || 8080;

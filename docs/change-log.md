@@ -24,11 +24,19 @@ This file records the major version changes of the projects.
 
 ### Added
 
+- setup redis database connection for fast cache memory, improving effectiveness of frequent and repeated queries
+- created routes, controllers and repositories for candidate-supported, selection-supported and probation-supported tables
+
 ### Edited
+
+- improved `BaseController.ts` and `BaseRepository.ts` with abstraction, preventing mistakenly use base classes
+- disabled direct password-access methods at `SysUserController`, preventing inappropriate disclosure of confidential information
 
 ### Fixed
 
 ### Delete
+
+- remove draft schema `schema_draft.sql` after finalised version is confirmed
 
 <br/>
 

@@ -8,7 +8,7 @@
   for their affiliated table.
 */
 
-import pool from '../infra/database';
+import pool from '../infra/database/postgres';
 import KeyError from '../util/errors/KeyError';
 import ValueError from '../util/errors/ValueError';
 import { TSchemaBase } from '../util/types';
