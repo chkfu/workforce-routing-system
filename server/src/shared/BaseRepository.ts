@@ -4,7 +4,7 @@
   Base Repository serves as centralised management of SQL queries
   between different tables. 
   
-  Additional repository scripts will only serve for specific business requirements 
+  Additional repository scripts will only serve for specific requirements 
   for their affiliated table.
 */
 

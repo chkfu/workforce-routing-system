@@ -26,6 +26,7 @@ This file records the major version changes of the projects.
 
 - setup redis database connection for fast cache memory, improving effectiveness of frequent and repeated queries
 - created routes, controllers and repositories for candidate-supported, selection-supported and probation-supported tables
+- implemented lock mechanism at`CacheService.ts` to prevent race condition with redis caching.
 
 ### Edited
 

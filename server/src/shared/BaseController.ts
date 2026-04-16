@@ -4,7 +4,7 @@
   Base Controller serves as centralised management of CRUD functionalities
   between different tables. 
   
-  Additional controller scripts will only serve for specific business requirements 
+  Additional controller scripts will only serve for specific requirements 
   for their affiliated table. Decide whether the shared methods should be
   specifically disabled or altered.
 */
