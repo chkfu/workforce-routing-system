@@ -1,7 +1,7 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
+import { rate_restriction } from './infra/middlewares/rate_limiter';
 import hpp from 'hpp';
 import cookie_parser from 'cookie-parser';
 import dept_route from './modules/departments/route';
@@ -57,20 +57,6 @@ exp_app.use(
 
 //  5. prevent clients pollute secret with signed cookies
 exp_app.use(cookie_parser(process.env.COOKIE_SECRET));
-
-//  6.  prevent overloading request with rate limit
-const rate_restriction = rateLimit({
-  max: 100,
-  windowMs: 60 * 60 * 1000, // remarks: restrict 100 visits each hour
-  statusCode: 429, // learnt: code 429 for overloading requests
-  message: {
-    status: 'failed',
-    message:
-      '[SERVER] error: client requests overloadding, please try it later.',
-  },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
 
 //  Setup express router
 const API_BASE_PATH = '/api/v1';
