@@ -11,13 +11,15 @@ export const rate_restriction = rate_limit({
   message: {
     status: 'failed',
     message:
-      '[SERVER] error: client requests overloadding, please try it later.',
+      '[SERVER] error: client requests overloading, please try it later.',
   },
   store: new RedisStore({
     //  learnt: sendCommand forwards redis commands (e.g. expiry info) to redis server
-    sendCommand: (...args: string[]) => redis.sendCommand(args),
+    //  learnt: node-redis has packaged the commands in ver 4
+    sendCommand: (command: string, ...args: string[]) =>
+      redis.sendCommand([command, ...args]),
     //  leanrt: prefix as the namespace to isolate data in sesion from cache keys
-    prefix: 'app_v1:sess:',
+    prefix: 'app_v1:session:',
   }),
   standardHeaders: true,
   legacyHeaders: false,

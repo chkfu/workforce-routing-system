@@ -60,7 +60,7 @@ exp_app.use(cookie_parser(process.env.COOKIE_SECRET));
 
 //  Setup express router
 const API_BASE_PATH = '/api/v1';
-exp_app.use(API_BASE_PATH, rate_restriction);
+// exp_app.use(API_BASE_PATH, rate_restriction);
 exp_app.use(`${API_BASE_PATH}/departments`, dept_route);
 exp_app.use(`${API_BASE_PATH}/staff`, staff_route);
 exp_app.use(`${API_BASE_PATH}/candidates`, candidate_route);

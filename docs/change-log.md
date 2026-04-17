@@ -27,6 +27,7 @@ This file records the major version changes of the projects.
 - setup redis database connection for fast cache memory, improving effectiveness of frequent and repeated queries
 - created routes, controllers and repositories for candidate-supported, selection-supported and probation-supported tables
 - implemented lock mechanism at`CacheService.ts` to prevent race condition with redis caching.
+- implemented redis store with rate limit for cyber security and prefix for session management.
 
 ### Edited
 
@@ -34,6 +35,10 @@ This file records the major version changes of the projects.
 - improved `BaseController.ts` and `BaseRepository.ts` with abstraction, preventing mistakenly use base classes
 - disabled direct password-access methods at `SysUserController`, preventing inappropriate disclosure of confidential information
 - extracted service class at `CacheService.ts` for centralising cache management of the server side
+
+## Fixed
+
+- fixed sendCommand syntax caused by specific format requried in node-redis, resumed redis client connection
 
 ### Delete
 
