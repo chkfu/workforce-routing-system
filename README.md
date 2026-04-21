@@ -27,6 +27,18 @@ It enables the institution to quickly identify the fault points and adjust their
 
 ## Features
 
+### A. Weighted Score & Evaluation Mechanism
+
+Calculating candidate scores with configurable factors (e.g. background, interview performance, and training results). Adjustable weightings support flexible and consistent evaluation with comparisons.
+
+### B. Preference-oriented Multi-Round Matching
+
+Matching candidates and departments according to their preferences and department priorities. Unmatched candidates will be reassigned based on remaining quota after serveral rounds of screening.
+
+### C. Comparable Evaluation of selection strategies
+
+Systematically re-running the selection process with different configurations, comparing various outcomes (e.g. passing rate, dropout rate, preference satisfaction) for management decision.
+
 <br/>
 
 ## Architecture
