@@ -136,7 +136,6 @@ CREATE TABLE IF NOT EXISTS candidate_tests(
   score_aptitude  NUMERIC(5,2),
   score_interview_1st  NUMERIC(5,2),
   score_interview_2nd  NUMERIC(5,2),
-  score_overall  NUMERIC(5,2),
   CONSTRAINT fk_candidate_tests
     FOREIGN KEY (candidate_id)
     REFERENCES candidates(_id)
@@ -313,7 +312,6 @@ CREATE TABLE IF NOT EXISTS hire_scoring(
   score_performance  NUMERIC(5,2) DEFAULT 0,
   score_attendance  NUMERIC(5,2) DEFAULT 0,
   score_adaptability  NUMERIC(5,2) DEFAULT 0,
-  score_overall  NUMERIC(5,2) DEFAULT 0,
   CONSTRAINT fk_weighting_scores_hiring
     FOREIGN KEY (hire_weight_id)
     REFERENCES hire_weighting(_id)
@@ -327,7 +325,7 @@ CREATE TABLE IF NOT EXISTS hire_scoring(
   is_active BOOLEAN DEFAULT TRUE
 );
 
-CREATE TABLE IF NOT EXISTS hire_intakes(
+CREATE TABLE IF NOT EXISTS final_intakes(
   _id  SERIAL  PRIMARY KEY,
   candidate_id  INTEGER,
   department_id  INTEGER,

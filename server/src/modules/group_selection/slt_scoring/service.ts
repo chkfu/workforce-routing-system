@@ -195,6 +195,17 @@ class SltScoreService extends BaseService<
       candidate_id,
       async () => {
         //  declarations
+        const exp_data: TCddExpBase[] =
+          await this.cdd_exp_service.get_recent_by_candidate(candidate_id);
+        //  restructure data format
+        const list_degree = new Set<string>();
+        const list_major: string[] = [];
+        const list_institute: string[] = [];
+        exp_data.forEach((record: TCddExpBase) => {
+          if (!record.is_active || !record.is_verified) return;
+        });
+        //  calculate scores
+        //  update database
       },
     );
   }

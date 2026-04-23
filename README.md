@@ -59,8 +59,9 @@ RESTful API modules has been grouped into five key categories:
 | group_candidate  | New hires related, and their related information. |
 | group_department | Departmental structure and agenda.                |
 | group_selection  | Considerations related to pre-training intakes    |
-| group+probation  | Considerations related to final intakes           |
-| group_hiring     | Final intake result                               |
+| group_probation  | Considerations related to probational performance |
+| group_hiring     | Considerations related to official hiring         |
+| group_final      | Final Result of Intakes                           |
 
 ### C. Layered Architecture
 

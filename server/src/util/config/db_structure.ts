@@ -95,7 +95,6 @@ const db_structure = {
       'score_aptitude',
       'score_interview_1st',
       'score_interview_2nd',
-      'score_overall',
       'is_active',
     ],
     primary_key: SHARED_PRIMARY_KEY,
@@ -225,7 +224,6 @@ const db_structure = {
       'score_performance',
       'score_attendance',
       'score_adaptability',
-      'score_overall',
       'is_active',
     ],
     primary_key: SHARED_PRIMARY_KEY,
@@ -246,8 +244,8 @@ const db_structure = {
     primary_key: SHARED_PRIMARY_KEY,
   },
 
-  hire_intakes: {
-    table: 'hire_intakes',
+  final_intakes: {
+    table: 'final_intakes',
     columns: [
       'candidate_id',
       'department_id',

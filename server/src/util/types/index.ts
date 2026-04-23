@@ -96,7 +96,6 @@ export type TCddTestBase = {
   score_aptitude: number;
   score_interview_1st: number;
   score_interview_2nd: number;
-  score_overall?: number;
   is_active: boolean;
 };
 
@@ -199,7 +198,6 @@ export type THireScoreBase = {
   score_performance: number;
   score_attendance: number;
   score_adaptability: number;
-  score_overall: number;
   is_active: boolean;
 };
 
@@ -215,8 +213,8 @@ export type THireDecisionBase = {
   is_active: boolean;
 };
 
-//  tags: hire_intakes
-export type THireIntakeBase = {
+//  tags: final_intakes
+export type TFinalIntakeBase = {
   candidate_id: number;
   department_id: number;
   hire_weight_id: number;

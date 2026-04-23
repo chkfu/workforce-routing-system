@@ -125,7 +125,7 @@ abstract class BaseService<T, R extends BaseRepository<T> = BaseRepository<T>> {
             const new_item = Object.fromEntries(
               this.columns.map((key) => [key, el[key]]),
             ) as unknown as Omit<T, keyof TSchemaBase>;
-            // reamrks: put the new string into service f女unction to proceed
+            // reamrks: put the new string into service function to proceed
             return this.repository.create_record_single(new_item);
           }),
         );
@@ -233,7 +233,8 @@ abstract class BaseService<T, R extends BaseRepository<T> = BaseRepository<T>> {
         );
       }
       //  removed cache
-
+      const cache_key: string = this.cache_service.create_key(this.table);
+      await this.cache_service.del_cache(cache_key);
       await Promise.all(
         Array.from(id_set).map((id) => {
           const cached_key: string = this.cache_service.create_key(
