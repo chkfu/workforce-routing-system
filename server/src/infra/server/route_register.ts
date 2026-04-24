@@ -15,7 +15,7 @@ import pbt_score_route from '../../modules/group_probation/pbt_scoring/route';
 import hire_weight_route from '../../modules/group_hiring/hire_weighting/route';
 import hire_score_route from '../../modules/group_hiring/hire_scoring/route';
 import hire_criteria_route from '../../modules/group_hiring/hire_criteria/route';
-import hire_intake_route from '../../modules/group_hiring/hire_intakes/route';
+import final_intake_route from '../../modules/group_final/final_intakes/route';
 
 export const route_register: Record<string, Router> = {
   departments: dept_route,
@@ -34,5 +34,5 @@ export const route_register: Record<string, Router> = {
   hire_criteria: hire_criteria_route,
   hire_weighting: hire_weight_route,
   hire_scoring: hire_score_route,
-  hire_intakes: hire_intake_route,
+  final_intakes: final_intake_route,
 };
