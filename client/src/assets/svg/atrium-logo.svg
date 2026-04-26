@@ -1,0 +1,22 @@
+<svg width='44' height='44' viewBox='0 0 44 44' fill='none' stroke='#d1d5db' xmlns='http://www.w3.org/2000/svg'>
+  <!-- Top A - tip pointing down to center -->
+  <g transform='translate(22, 6) rotate(180)'>
+    <path d='M -5,-6 L 0,4 L 5,-6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' />
+    <line x1='-2.5' y1='-1' x2='2.5' y2='-1' stroke-width='2.5' stroke-linecap='round' />
+  </g>
+
+  <!-- Bottom-left A - tip pointing to center -->
+  <g transform='translate(6, 34) rotate(53)'>
+    <path d='M -5,-6 L 0,4 L 5,-6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' />
+    <line x1='-2.5' y1='-1' x2='2.5' y2='-1' stroke-width='2.5' stroke-linecap='round' />
+  </g>
+
+  <!-- Bottom-right A - tip pointing to center -->
+  <g transform='translate(38, 34) rotate(307)'>
+    <path d='M -5,-6 L 0,4 L 5,-6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' />
+    <line x1='-2.5' y1='-1' x2='2.5' y2='-1' stroke-width='2.5' stroke-linecap='round' />
+  </g>
+
+  <!-- Center text -->
+  <text x='22' y='24' text-anchor='middle' dominant-baseline='middle' font-size='5' font-weight='bold' fill='#d1d5db'>ATRIUM</text>
+</svg>

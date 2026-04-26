@@ -19,8 +19,8 @@ exp_app.use(helmet());
 //  TODO: to be applied for frontend communication
 //  2. setup cors, enabling to access server url from designated sites
 const cors_opts = {
-  origin: [''],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: ['http://localhost:5173'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 };
