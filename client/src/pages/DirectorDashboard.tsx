@@ -8,25 +8,40 @@ const card_list_personal: TCardItem[] = [
   {
     title: 'View Profile',
     description: 'View and update your personal information and profile.',
-    path: '/me/candidate-profile',
+    path: '/me/staff-profile',
   },
 ];
 
 const card_list_task_panel: TCardItem[] = [
   {
-    title: 'View Progress',
-    description: 'Monitor your application status and task assignments.',
+    title: 'Manage Staff',
+    description: 'Oversee and manage all staff members and their roles',
+    path: '/manage-staff',
+  },
+  {
+    title: 'Manage Departments',
+    description: 'Configure and manage organizational departments',
+    path: '/manage-departments',
+  },
+  {
+    title: 'Manage Weighting',
+    description: 'Set scoring weights and evaluation criteria',
+    path: '/#',
+  },
+  {
+    title: 'Manage Strategies',
+    description: 'Define and manage recruitment strategies',
     path: '/#',
   },
 ];
 
 //  Function
 
-export default function CandidateDashboard(): JSX.Element {
+export default function DirectorDashboard(): JSX.Element {
   //  visualise
   return (
     <section
-      id='candidate-dashboard-section'
+      id='director-dashboard-section'
       className='px-12 py-6 flex flex-col gap-6'
     >
       {/* personal section */}

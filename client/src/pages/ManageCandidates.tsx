@@ -3,9 +3,8 @@ import { v4 as uuid } from 'uuid';
 import axios from 'axios';
 
 export default function ManageCandidates(): JSX.Element {
-  const [candidates, setCandidates] = useState<any[]>([]);
-
   //  hooks
+  const [candidates, setCandidates] = useState<any[]>([]);
   useEffect(() => {
     axios
       .get('https://localhost:8080/api/v1/candidates')

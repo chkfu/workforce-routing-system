@@ -7,6 +7,8 @@ import ManageCandidates from './pages/CandidateProfile';
 import ManageDepartments from './pages/ManageDepartments';
 import CandidateProfile from './pages/CandidateProfile';
 import CandidateDashboard from './pages/CandidateDashboard';
+import AssistantDashboard from './pages/AssistantDashboard';
+import ManagerDashboard from './pages/ManagerDashboard';
 
 const routes: RouteObject[] = [
   {
@@ -16,10 +18,12 @@ const routes: RouteObject[] = [
   {
     element: <Layout />,
     children: [
+      //  Public Access
       {
         path: '/',
         element: <Home />,
       },
+      //  Group List, by permissions
       {
         path: '/manage-candidates',
         element: <ManageCandidates />,
@@ -28,10 +32,20 @@ const routes: RouteObject[] = [
         path: '/manage-departments',
         element: <ManageDepartments />,
       },
+      //  Dashboards, by role positions
       {
         path: '/candidate-dashboard',
         element: <CandidateDashboard />,
       },
+      {
+        path: '/assistant-dashboard',
+        element: <AssistantDashboard />,
+      },
+      {
+        path: '/manager-dashboard',
+        element: <ManagerDashboard />,
+      },
+      //  Profiles, by role positions
       {
         path: '/me/candidate-profile',
         element: <CandidateProfile />,
