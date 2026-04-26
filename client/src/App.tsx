@@ -6,6 +6,7 @@ import Error from './pages/Error';
 import ManageCandidates from './pages/CandidateProfile';
 import ManageDepartments from './pages/ManageDepartments';
 import CandidateProfile from './pages/CandidateProfile';
+import CandidateDashboard from './pages/CandidateDashboard';
 
 const routes: RouteObject[] = [
   {
@@ -26,6 +27,10 @@ const routes: RouteObject[] = [
       {
         path: '/manage-departments',
         element: <ManageDepartments />,
+      },
+      {
+        path: '/candidate-dashboard',
+        element: <CandidateDashboard />,
       },
       {
         path: '/me/candidate-profile',

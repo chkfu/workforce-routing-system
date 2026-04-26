@@ -13,7 +13,7 @@ export default function Header() {
 
   return (
     <header className='sticky top-0 z-50'>
-      <nav className='bg-teal-800/85 border-b border-gray-200 shadow-sm w-full pt-2 relative'>
+      <nav className='bg-teal-800 border-b border-gray-200 shadow-sm w-full pt-2 relative'>
         {/* Absolute -  Login Button */}
         <a
           href='/login'
