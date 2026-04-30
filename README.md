@@ -19,9 +19,9 @@
 
 Companies often lack consistent procedures on assigning the new hires for internal re-training and jobs, leading to high dropout rates, poor role fits and the waste of resources.
 
-The Atrium Platform is a full-stack web application that systematically matches candidates with departments throughout the probation period, while enabling management to track and evaluate the effectiveness of their selection strategies.
+The Atrium Platform is a full-stack web application that systematically matches candidates with departments throughout the probation period, while enabling management to monitor assignment outcomes during the probation period.
 
-It enables the institution to quickly identify the fault points and adjust their intake preferences, reducing talent misallocation and related attrition with first-hand empirical data.
+It gives top management the structured visibility into assignment outcomes during probation, and lets them make smart changes to how things work.
 
 <br/>
 
@@ -64,6 +64,8 @@ RESTful API modules has been grouped into five key categories:
 | group_final      | Final Result of Intakes                           |
 
 These core modules will support the two-tiered workflows for candidate selection as shown in below:
+
+#### (1) Candidate Selection Flow
 
 <p>
   <img src="docs/charts/chart_domain_logic.png" width="100%">
