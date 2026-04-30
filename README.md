@@ -66,7 +66,7 @@ RESTful API modules has been grouped into five key categories:
 These core modules will support the two-tiered workflows for candidate selection as shown in below:
 
 <p>
-  <img src="docs/charts/chart_domain_logic.png" width="75%">
+  <img src="docs/charts/chart_domain_logic.png" width="85%">
 </p>
 
 ### C. Layered Architecture
