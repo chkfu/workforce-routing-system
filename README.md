@@ -63,6 +63,12 @@ RESTful API modules has been grouped into five key categories:
 | group_hiring     | Considerations related to official hiring         |
 | group_final      | Final Result of Intakes                           |
 
+These core modules will support the two-tiered workflows for candidate selection as shown in below:
+
+<p>
+  <img src="docs/chart_domain_logic.png" width="75%">
+</p>
+
 ### C. Layered Architecture
 
 Each module contains API layers to ensure clear division of responsibilities between application flow and domain logic:
@@ -89,6 +95,34 @@ Each module contains API layers to ensure clear division of responsibilities bet
 <br/>
 
 ## Installation / Initialisation
+
+For project setup, you need to install Node.js v18+, PostgreSQL, and Redis to proceed further.
+
+Please clone the project at the <a href='https://github.com/chkfu/atrium-workforce-routing-system.git'>Github repository</a>.
+
+### 1. Server side setup (development environment)
+
+Beginning with a new terminal, and run the CLI with the commands below:
+
+```
+$ cd server
+$ npm install
+$ npm run dev
+```
+
+The client will be available at `http://localhost:8080`
+
+### 2. Client side setup (development environment)
+
+For browser display, please start the second terminal and run the below commands:
+
+```
+$ cd client
+$ npm install
+$ npm run dev
+```
+
+The the server will be available at `http://localhost:5173`.
 
 <br/>
 

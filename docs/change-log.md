@@ -18,21 +18,19 @@ This file records the major version changes of the projects.
 
 <br/>
 
-## [1.0.4] - Apr 18, 2026 - In Progress
+## [1.0.4] - Apr 30, 2026 - In Progress
 
-<i>Objective: implement candidate selection algorithms and structured workflows to automate personnel matching decisions.</i>
+<i>Objective: integrated client and server structure into basic MVP with basic CRUD structure.</i>
 
 ### Added
 
-- added `README.md` with new content of project objective, architecture and dependencies.
+- initialised `client/` for the frontend building, empowered by tailwind-CSS and React.
+- created data flow and UML diagram to outline the project and database structure.
 
 ### Edited
 
 - re-organised `modules/` folder with categorised groups, improve better project structure for maintenance.
-
-## Fixed
-
-### Delete
+- updated `README.md` with core content of project objective, features, installation, architecture and dependencies.
 
 <br/>
 
